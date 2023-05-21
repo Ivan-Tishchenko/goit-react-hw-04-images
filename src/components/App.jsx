@@ -7,6 +7,7 @@ export class App extends Component {
   state = {
     searchWord: '',
     currentPage: 0,
+    scroll: 0,
   };
 
   hendelSubmit = searchWord => {
@@ -34,6 +35,7 @@ export class App extends Component {
         <ImageGallery
           searchWord={this.state.searchWord.split(' ').join('+')}
           page={this.state.currentPage}
+          scroll={this.state.scroll}
         />
         {this.state.currentPage > 0 && (
           <Button

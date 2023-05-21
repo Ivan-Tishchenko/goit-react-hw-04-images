@@ -1,61 +1,45 @@
-import { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 import { Modal } from './Modal/Modal';
 
-export class ImageGalleryItem extends Component {
-  state = {
-    modalStatus: false,
-    modalUrl: '',
-  };
-  scroll = 0;
+export const ImageGalleryItem = props => {
+  const [modalStatus, setModalStatus] = useState(false);
+  const [modalUrl, setModalUrl] = useState('');
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    const scrollY = window.scrollY;
+  useEffect(() => {
+    window.scrollTo(0, props.scroll);
+  }, [props.scroll]);
 
-    this.scroll = scrollY;
-  }
-
-  componentDidUpdate() {
-    const scrollToY = this.scroll;
-    window.scrollTo(0, scrollToY);
-
-  }
-
-  hendelClick = evt => {
+  const hendelClick = evt => {
     evt.preventDefault();
 
-    this.setState({
-      modalStatus: true,
-      modalUrl: evt.currentTarget.href,
-    });
+    setModalStatus(true);
+    setModalUrl(evt.currentTarget.href);
   };
 
-  closeModal = () => {
-    this.setState({ modalStatus: false, modalUrl: '' });
+  const closeModal = () => {
+    setModalStatus(false);
+    setModalUrl('');
   };
 
-  render() {
-    return (
-      <>
-        {this.state.modalStatus && (
-          <Modal url={this.state.modalUrl} closeFunc={this.closeModal} />
-        )}
-        {this.props.data?.map(obj => (
-          <li key={obj.id} className={css.gallery_item}>
-            <a
-              href={obj.largeImageURL}
-              onClick={this.hendelClick}
-              className={css.image}
-            >
-              <img src={obj.webformatURL} alt={obj.id} className={css.image} />
-            </a>
-          </li>
-        ))}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {modalStatus && <Modal url={modalUrl} closeFunc={closeModal} />}
+      {props.data?.map(obj => (
+        <li key={obj.id} className={css.gallery_item}>
+          <a
+            href={obj.largeImageURL}
+            onClick={hendelClick}
+            className={css.image}
+          >
+            <img src={obj.webformatURL} alt={obj.id} className={css.image} />
+          </a>
+        </li>
+      ))}
+    </>
+  );
+};
 
 ImageGalleryItem.propTypes = {
   data: PropTypes.array,

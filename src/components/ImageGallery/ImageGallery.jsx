@@ -75,7 +75,10 @@ export class ImageGallery extends Component {
         )}
         {!this.state.loading && (
           <ul className={css.gallery}>
-            <ImageGalleryItem data={this.state.data} />
+            <ImageGalleryItem
+              data={this.state.data}
+              scroll={this.props.scroll}
+            />
           </ul>
         )}
       </>
