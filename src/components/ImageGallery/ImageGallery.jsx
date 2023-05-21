@@ -18,6 +18,9 @@ export const ImageGallery = props => {
   }, [props.page, props.searchWord]);
 
   const fetchAPI = async () => {
+    if (props.page === 0) {
+      return;
+    }
     if (
       prevProps.current.page !== props.page ||
       prevProps.current.searchWord !== props.searchWord
@@ -29,7 +32,6 @@ export const ImageGallery = props => {
       )
         .then(response => {
           if (!response.ok) {
-            console.log(response);
             throw new Error(response.status);
           }
           return response.json();
@@ -51,9 +53,7 @@ export const ImageGallery = props => {
         .finally(() => {
           setLoading(false);
         });
-      console.log('asdasd');
     }
-    console.log('dsadsa');
   };
 
   return (
