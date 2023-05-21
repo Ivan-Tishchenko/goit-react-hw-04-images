@@ -1,49 +1,41 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
 
-export class App extends Component {
-  state = {
-    searchWord: '',
-    currentPage: 0,
-    scroll: 0,
-  };
+export const App = props => {
+  const [searchWord, setSearchWord] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [scroll, setScroll] = useState(0);
 
-  hendelSubmit = searchWord => {
-    if (searchWord.length === 0) {
+  const hendelSubmit = newSearchWord => {
+    if (newSearchWord.length === 0) {
       alert('to searc foto need a word');
       return;
     }
-    if (this.state.searchWord === searchWord) {
+    if (searchWord === newSearchWord) {
       return;
     }
-    this.setState({
-      searchWord,
-      currentPage: 1,
-    });
+    setSearchWord(newSearchWord);
+    setCurrentPage(1);
   };
 
-  hendelClick = page => {
-    this.setState({ currentPage: page });
+  const hendelClick = page => {
+    setCurrentPage(page);
+    setScroll(window.scrollY);
   };
 
-  render() {
-    return (
-      <>
-        <Searchbar hendelSubmit={this.hendelSubmit} />
-        <ImageGallery
-          searchWord={this.state.searchWord.split(' ').join('+')}
-          page={this.state.currentPage}
-          scroll={this.state.scroll}
-        />
-        {this.state.currentPage > 0 && (
-          <Button
-            hendelClick={this.hendelClick}
-            currentPage={this.state.currentPage}
-          />
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar hendelSubmit={hendelSubmit} />
+      <ImageGallery
+        searchWord={searchWord.split(' ').join('+')}
+        page={currentPage}
+        scroll={scroll}
+      />
+      {currentPage > 0 && (
+        <Button hendelClick={hendelClick} currentPage={currentPage} />
+      )}
+    </>
+  );
+};
