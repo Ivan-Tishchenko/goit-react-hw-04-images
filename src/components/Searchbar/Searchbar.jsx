@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import css from './Searchbar.module.css';
 import PropTypes from 'prop-types';
+import { BsSearch } from 'react-icons/bs';
 
 export const Searchbar = props => {
   const [searchWord, setSearchWord] = useState('');
@@ -21,7 +22,7 @@ export const Searchbar = props => {
     <header className={css.searchbar}>
       <form className={css.form} onSubmit={hendelSubmit}>
         <button type="submit" className={css.button}>
-          <span className={css.button_label}>Search</span>
+          <BsSearch />
         </button>
         <input
           className={css.input}
